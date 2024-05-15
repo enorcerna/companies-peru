@@ -1,5 +1,6 @@
 <script lang="ts">
-	import data from '@/data/company_data.json';
+	//import data from '@/data/company_data.json';
+	export let data;
 	import Icon from '@iconify/svelte';
 	import { toast } from 'svelte-sonner';
 	import * as Table from '@/components/ui/table';
@@ -15,7 +16,9 @@
 			description: tex
 		});
 	};
-	$: bussines = data.filter((company) => company.memory.some((memory) => memory.year >= yearval));
+	$: bussines = data.values.filter((company) =>
+		company.memory.some((memory) => memory.year >= yearval)
+	);
 	$: companies = bussines.slice(initPage, perPage);
 </script>
 
