@@ -6,17 +6,17 @@
 	import { Button } from '@/components/ui/button';
 	const linkBase = 'https://documents.bvl.com.pe/';
 	let yearval = 2018;
-	let perPage = 10;
+	let perPage = 21;
 	let initPage = 0;
+	const take = 21;
 	const handleCopy = (tex: string) => {
 		navigator.clipboard.writeText(tex);
 		toast.success('Copiado!!', {
 			description: tex
 		});
 	};
-	$: companies = data
-		.filter((company) => company.memory.some((memory) => memory.year >= yearval))
-		.slice(initPage, perPage);
+	$: bussines = data.filter((company) => company.memory.some((memory) => memory.year >= yearval));
+	$: companies = bussines.slice(initPage, perPage);
 </script>
 
 <header class="flex items-center py-2 sticky top-0 backdrop-blur-lg z-10">
@@ -40,15 +40,15 @@
 				</Button>
 			</div>
 		</aside>
-
+		<aside>page: {perPage / take}/{Math.round(bussines.length / take)}</aside>
 		<aside class="flex gap-1">
 			<Button
 				size="sm"
 				variant="outline"
 				on:click={() => {
 					if (initPage > 0) {
-						perPage = perPage - 10;
-						initPage = initPage - 10;
+						perPage = perPage - take;
+						initPage = initPage - take;
 					}
 				}}
 			>
@@ -58,9 +58,9 @@
 				size="sm"
 				variant="outline"
 				on:click={() => {
-					if (perPage < 261) {
-						perPage = perPage + 10;
-						initPage = initPage + 10;
+					if (perPage < bussines.length) {
+						perPage = perPage + take;
+						initPage = initPage + take;
 					}
 				}}
 			>
