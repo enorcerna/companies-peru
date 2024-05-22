@@ -5,6 +5,7 @@
   import {toast} from "svelte-sonner";
   import * as Table from "@/components/ui/table";
   import {Button} from "@/components/ui/button";
+  import Search from "@/components/header/Search.svelte";
   const linkBase = "https://documents.bvl.com.pe/";
   let yearval = 2021;
   let perPage = 21;
@@ -43,6 +44,7 @@
         </Button>
       </div>
     </aside>
+    <Search />
     <aside>page: {perPage / take}/{Math.round(bussines.length / take)}</aside>
     <aside class="flex gap-1">
       <Button
