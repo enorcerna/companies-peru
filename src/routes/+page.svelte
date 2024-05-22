@@ -1,26 +1,26 @@
 <script lang="ts">
-  //import data from '@/data/company_data.json';
   export let data;
   import Icon from "@iconify/svelte";
-  import {toast} from "svelte-sonner";
   import * as Table from "@/components/ui/table";
   import {Button} from "@/components/ui/button";
   import Search from "@/components/header/Search.svelte";
+  import {handleCopy} from "@/utils/main";
+
   const linkBase = "https://documents.bvl.com.pe/";
-  let yearval = 2021;
-  let perPage = 21;
-  let initPage = 0;
   const take = 21;
-  const handleCopy = (tex: string) => {
-    navigator.clipboard.writeText(tex);
-    toast.success("Copiado!!", {
-      description: tex
-    });
+
+  let yearval = 2021;
+  let perPage = take;
+  let initPage = 0;
+  let text = "";
+
+  const handleSearch = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    text = target.value;
   };
-  $: bussines = data.values.filter((company) =>
-    company.memory.some((memory) => memory.year >= yearval)
-  );
-  $: companies = bussines.slice(initPage, perPage);
+
+  $: bussines = data.values;
+  $: companies = data.values.slice(initPage, initPage + perPage);
 </script>
 
 <header class="flex items-center py-2 sticky top-0 backdrop-blur-lg z-10">
@@ -44,7 +44,7 @@
         </Button>
       </div>
     </aside>
-    <Search />
+    <Search on:change={handleSearch} />
     <aside>page: {perPage / take}/{Math.round(bussines.length / take)}</aside>
     <aside class="flex gap-1">
       <Button
@@ -90,7 +90,7 @@
         <Table.Row class="">
           <Table.Cell class="">{id + initPage}</Table.Cell>
           <Table.Cell class="">
-            {companyName}
+            {companyName.toUpperCase()}
             <Button
               size="sm"
               variant="outline"

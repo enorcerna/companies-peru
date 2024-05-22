@@ -1,8 +1,22 @@
-import data from '@/data/company_data.json';
+import {dataCompanies} from "@/utils/main";
+
 export const prerender = true;
-//export const ssr = false;
-export const load = () => {
-	return {
-		values: data
-	};
+
+export const load = ({url}) => {
+  const query = url.searchParams.get("q") ?? "";
+
+  const filteredCompanies = dataCompanies().filter((company) =>
+    company.memory.some((memory) => memory.year >= 2021)
+  );
+
+  const result =
+    query.length > 0
+      ? filteredCompanies.filter((company) =>
+          company.companyName.includes(query.toLowerCase())
+        )
+      : filteredCompanies;
+
+  return {
+    values: result
+  };
 };
