@@ -1,7 +1,4 @@
 import {dataCompanies} from "@/utils/main";
-
-export const prerender = true;
-
 export const load = ({url}) => {
   const query = url.searchParams.get("q") ?? "";
 
